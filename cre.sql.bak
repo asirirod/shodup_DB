@@ -1,0 +1,65 @@
+
+SET foreign_key_checks = 0;
+
+DROP TABLE if exists node;
+CREATE TABLE node (
+  n_uuid        varchar(37) not null,
+  model         varchar(10),
+  owner         char(9), 
+  primary key (n_uuid)
+);
+
+
+DROP TABLE if exists event;
+CREATE TABLE event (
+  id            char(9) not null, 
+  event_name    varchar(25),
+  date_time     Date,
+  descr         varchar(50),
+  primary key (id),
+  foreign key (event_name) references event_nt(event_name),
+  foreign key (date_time) references event_nt(date_time)
+);
+
+
+DROP TABLE if exists event_nt;
+CREATE TABLE event_nt (
+  event_name      varchar(25) not null,
+  date_time       Date not null,
+  event_id        char(9),
+  primary key (event_name, date_time),
+  index(date_time),
+  foreign key (event_id) references event(id)
+);
+
+
+DROP TABLE if exists detected_at_by;
+CREATE TABLE detected_at_by (
+  ep_UUID      varchar(37) not null,
+  event_id     char(9) not null,
+  n_uuid       varchar(37) not null,
+  start_time   Date,
+  end_time     Date,
+  primary key (ep_UUID, event_id, n_uuid),
+  foreign key (ep_UUID) references end_point(ep_UUID)
+);
+
+
+DROP TABLE if exists end_point;
+CREATE TABLE end_point (
+  ep_UUID       varchar(37) not null,
+  email         varchar(30) not null, 
+  primary key (ep_UUID,email),
+  foreign key (email) references attendee(email)
+);
+
+
+DROP TABLE if exists attendee;
+CREATE TABLE attendee (
+  email           varchar(30) not null,
+  name            varchar(15),
+  is_guest        boolean,
+  password        varchar(15),
+  phone           integer(10),
+  primary key (email)
+);
