@@ -16,8 +16,7 @@ CREATE TABLE event (
   event_name    varchar(25),
   date_time     datetime,
   descr         varchar(50),
-  primary key (id),
-  foreign key (event_name, date_time) references event_nt(event_name, date_time)
+  primary key (id)
 );
 
 
